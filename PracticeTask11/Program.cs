@@ -5,47 +5,53 @@ namespace PracticeTask11
     internal class Program
     {
         //Быстрая сортировка
-        static void quickSort(int[] numbers, int left, int right)
+        private static int[] quickSort(int[] array, int minIndex, int maxIndex)
         {
-            int pivot; // разрешающий элемент
-            int l_hold = left; //левая граница
-            int r_hold = right; // правая граница
-            pivot = numbers[left];
-            while (left < right) // пока границы не сомкнутся
+            //если индексы схлопнулись, то возвращаем массив
+            if (minIndex >= maxIndex)
             {
-                while ((numbers[right] >= pivot) && (left < right))
-                    right--; // сдвигаем правую границу пока элемент [right] больше [pivot]
-                if (left != right) // если границы не сомкнулись
+                return array;
+            }
+            //выбираем индекс разрешающего элемента
+            int pivotIndex = getPivotIndex(array, minIndex, maxIndex);
+            //вызываем рекурсию сортировки левой части массива до пивота
+            quickSort(array, minIndex, pivotIndex - 1);
+            //вызываем рекурсию сортировки правой части массива от пивота
+            quickSort(array, pivotIndex + 1, maxIndex);
+            //возвращаем массив
+            return array;
+        }
+
+        private static int getPivotIndex(int[] array, int minIndex, int maxIndex)
+        {
+            //изначально объявляем индекс пивота
+            int pivot = minIndex - 1;
+            //перебераем индексы массива
+            for (int i = minIndex; i <= maxIndex; i++)
+            {
+                //если элемент меньше последнего элемента, то увеличиваем пивот и меняем местами элемент под номером пивота и элемент цикла
+                if (array[i] < array[maxIndex])
                 {
-                    numbers[left] = numbers[right]; // перемещаем элемент [right] на место разрешающего
-                    left++; // сдвигаем левую границу вправо
-                }
-                while ((numbers[left] <= pivot) && (left < right))
-                    left++; // сдвигаем левую границу пока элемент [left] меньше [pivot]
-                if (left != right) // если границы не сомкнулись
-                {
-                    numbers[right] = numbers[left]; // перемещаем элемент [left] на место [right]
-                    right--; // сдвигаем правую границу вправо
+                    pivot++;
+                    Swap(ref array[pivot], ref array[i]);
                 }
             }
-            numbers[left] = pivot; // ставим разрешающий элемент на место
-            pivot = left;
-            left = l_hold;
-            right = r_hold;
-            if (left < pivot) // Рекурсивно вызываем сортировку для левой и правой части массива
-                quickSort(numbers, left, pivot - 1);
-            if (right > pivot)
-                quickSort(numbers, pivot + 1, right);
+            //увеличиваем пивот
+            pivot++;
+            //меняем элемент пивота с последним
+            Swap(ref array[pivot], ref array[maxIndex]);
+            //возвращаем пивот
+            return pivot;
         }
         //метод обмена элементов
         static void Swap(ref int e1, ref int e2)
         {
-            var temp = e1;
+            int temp = e1;
             e1 = e2;
             e2 = temp;
         }
 
-        //сортировка вставками
+        //метод сортировки вставками
         static int[] insertionSort(int[] array)
         {
             for (var i = 0; i < array.Length; i++)
@@ -63,13 +69,58 @@ namespace PracticeTask11
 
             return array;
         }
-        static void Main(string[] args)
+        //метод бинарного поиска
+        static int binarySearch(int[] array, int searchedValue, int left, int right)
+        {
+            //пока не сошлись границы массива
+            while (left <= right)
+            {
+                //индекс среднего элемента
+                var middle = (left + right) / 2;
+                if (searchedValue == array[middle])
+                {
+                    return middle;
+                }
+                else if (searchedValue < array[middle])
+                {
+                    //сужаем рабочую зону массива с правой стороны
+                    right = middle - 1;
+                }
+                else
+                {
+                    //сужаем рабочую зону массива с левой стороны
+                    left = middle + 1;
+                }
+            }
+            //ничего не нашли
+            return -1;
+        }
+        static int[] deleteInArray(int[] array, int indexToDeleteStart, int indexToDeleteStop)
+        {
+            //объявляем новый массив
+            var output = new int[array.Length - (indexToDeleteStop - indexToDeleteStart)];
+            //объявляем счетчик
+            int counter = 0;
+            //перебераем исходный массив
+            for (int i = 0; i < array.Length; i++)
+            {
+                //если индекс массива попал в диапозон удаления пропускаем шаг цикла
+                if (i >= indexToDeleteStart && i <= indexToDeleteStop) continue;
+                //записываем в новый массив элемент из старого
+                output[counter] = array[i];
+                //прибавляем 1 к счетчику
+                counter++;
+            }
+            //возвращаем урезанныц массив
+            return output;
+        }
+            static void Main(string[] args)
         {
             Random random = new Random();
             Console.Write("Введите количество элементов: ");
             int N = int.Parse(Console.ReadLine());
             int[] array = new int[N];
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 array[i] = random.Next(-999,999);
                 Console.Write($" {array[i]}");
@@ -77,17 +128,17 @@ namespace PracticeTask11
             Console.WriteLine();
             Console.WriteLine("Начинаю быструю сортировку...");
             DateTime start = DateTime.Now;
-            quickSort(array, 0, N-1);
+            array = quickSort(array, 0, array.Length - 1);
             TimeSpan timeTaken = DateTime.Now - start;
             Console.WriteLine("Массив после сортировки");
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 Console.Write($" {array[i]}");
             }
             Console.WriteLine();
             Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken.Milliseconds);
             Console.WriteLine("Генерирую новый массив...");
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 array[i] = random.Next(-999, 999);
                 Console.Write($" {array[i]}");
@@ -98,13 +149,33 @@ namespace PracticeTask11
             array = insertionSort(array);
             TimeSpan timeTaken2 = DateTime.Now - start2;
             Console.WriteLine("Массив после сортировки");
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 Console.Write($" {array[i]}");
             }
             Console.WriteLine();
             Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
-
+            Console.Write("Введите индекс начала удаления: ");
+            int startDeleteIndex = int.Parse(Console.ReadLine());
+            Console.Write("Введите количество удаляемых элементов: ");
+            int count = int.Parse(Console.ReadLine());
+            array = deleteInArray(array, startDeleteIndex, startDeleteIndex + count);
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write($" {array[i]}");
+            }
+            Console.WriteLine();
+            Console.Write("Введите запрашиваемый элемент: ");
+            int requiredElement = int.Parse(Console.ReadLine());
+            int resultOfSearch = binarySearch(array,requiredElement, 0, array.Length - 1);
+            if(resultOfSearch == -1)
+            {
+                Console.WriteLine("Элемент не найден");
+            }
+            else
+            {
+                Console.WriteLine($"Элемент {requiredElement} найден под индексом {resultOfSearch}");
+            }
         }
     }
 }
