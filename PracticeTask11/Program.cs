@@ -95,6 +95,14 @@ namespace PracticeTask11
             //ничего не нашли
             return -1;
         }
+        static void printArray(int[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write($" {array[i]}");
+            }
+            Console.WriteLine();
+        }
         static int[] deleteInArray(int[] array, int indexToDeleteStart, int indexToDeleteStop)
         {
             //объявляем новый массив
@@ -131,11 +139,7 @@ namespace PracticeTask11
             array = quickSort(array, 0, array.Length - 1);
             TimeSpan timeTaken = DateTime.Now - start;
             Console.WriteLine("Массив после сортировки");
-            for (int i = 0; i < array.Length; i++)
-            {
-                Console.Write($" {array[i]}");
-            }
-            Console.WriteLine();
+            printArray(array);
             Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken.Milliseconds);
             Console.WriteLine("Генерирую новый массив...");
             for (int i = 0; i < array.Length; i++)
@@ -149,22 +153,14 @@ namespace PracticeTask11
             array = insertionSort(array);
             TimeSpan timeTaken2 = DateTime.Now - start2;
             Console.WriteLine("Массив после сортировки");
-            for (int i = 0; i < array.Length; i++)
-            {
-                Console.Write($" {array[i]}");
-            }
-            Console.WriteLine();
+            printArray(array);
             Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
             Console.Write("Введите индекс начала удаления: ");
             int startDeleteIndex = int.Parse(Console.ReadLine());
             Console.Write("Введите количество удаляемых элементов: ");
             int count = int.Parse(Console.ReadLine());
             array = deleteInArray(array, startDeleteIndex, startDeleteIndex + count);
-            for (int i = 0; i < array.Length; i++)
-            {
-                Console.Write($" {array[i]}");
-            }
-            Console.WriteLine();
+            printArray(array);
             Console.Write("Введите запрашиваемый элемент: ");
             int requiredElement = int.Parse(Console.ReadLine());
             int resultOfSearch = binarySearch(array,requiredElement, 0, array.Length - 1);
