@@ -5,7 +5,7 @@ namespace PracticeTask11
     internal class Program
     {
         //Быстрая сортировка
-        private static int[] quickSort(int[] array, int minIndex, int maxIndex)
+        static int[] quickSort(int[] array, int minIndex, int maxIndex)
         {
             //если индексы схлопнулись, то возвращаем массив
             if (minIndex >= maxIndex)
@@ -22,7 +22,7 @@ namespace PracticeTask11
             return array;
         }
 
-        private static int getPivotIndex(int[] array, int minIndex, int maxIndex)
+        static int getPivotIndex(int[] array, int minIndex, int maxIndex)
         {
             //изначально объявляем индекс пивота
             int pivot = minIndex - 1;
