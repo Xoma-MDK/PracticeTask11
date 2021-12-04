@@ -54,10 +54,10 @@ namespace PracticeTask11
         //метод сортировки вставками
         static int[] insertionSort(int[] array)
         {
-            for (var i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
-                var key = array[i];
-                var j = i;
+                int key = array[i];
+                int j = i;
                 while ((j > 0) && (array[j - 1] > key))
                 {
                     Swap(ref array[j - 1], ref array[j]);
@@ -76,7 +76,7 @@ namespace PracticeTask11
             while (left <= right)
             {
                 //индекс среднего элемента
-                var middle = (left + right) / 2;
+                int middle = (left + right) / 2;
                 if (searchedValue == array[middle])
                 {
                     return middle;
@@ -106,7 +106,7 @@ namespace PracticeTask11
         static int[] deleteInArray(int[] array, int indexToDeleteStart, int indexToDeleteStop)
         {
             //объявляем новый массив
-            var output = new int[array.Length - (indexToDeleteStop - indexToDeleteStart)];
+            int[] output = new int[array.Length - (indexToDeleteStop - indexToDeleteStart)];
             //объявляем счетчик
             int counter = 0;
             //перебераем исходный массив
