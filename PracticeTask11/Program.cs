@@ -133,6 +133,8 @@ namespace PracticeTask11
                 array[i] = random.Next(-999,999);
                 Console.Write($" {array[i]}");
             }
+            int[] array2 = new int[N];
+            Array.Copy(array,array2, N);
             Console.WriteLine();
             Console.WriteLine("Начинаю быструю сортировку...");
             DateTime start = DateTime.Now;
@@ -141,19 +143,12 @@ namespace PracticeTask11
             Console.WriteLine("Массив после сортировки");
             printArray(array);
             Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken.Milliseconds);
-            Console.WriteLine("Генерирую новый массив...");
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = random.Next(-999, 999);
-                Console.Write($" {array[i]}");
-            }
-            Console.WriteLine();
             Console.WriteLine("Начинаю сортировку методом вставки...");
             DateTime start2 = DateTime.Now;
-            array = insertionSort(array);
+            array2 = insertionSort(array2);
             TimeSpan timeTaken2 = DateTime.Now - start2;
             Console.WriteLine("Массив после сортировки");
-            printArray(array);
+            printArray(array2);
             Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
             Console.Write("Введите индекс начала удаления: ");
             int startDeleteIndex = int.Parse(Console.ReadLine());
