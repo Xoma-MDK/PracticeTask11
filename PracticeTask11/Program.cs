@@ -131,33 +131,33 @@ namespace PracticeTask11
                 for (int i = 0; i < array.Length; i++)
                 {
                     array[i] = random.Next(-999, 999);
-                    Console.Write($" {array[i]}");
+                    //Console.Write($" {array[i]}");
                 }
                 int[] array2 = new int[N];
                 Array.Copy(array, array2, N);
-                Console.WriteLine();
-                Console.WriteLine("Начинаю быструю сортировку...");
+                //Console.WriteLine();
+                //Console.WriteLine("Начинаю быструю сортировку...");
                 DateTime start = DateTime.Now;
                 array = quickSort(array, 0, array.Length - 1);
                 TimeSpan timeTaken = DateTime.Now - start;
-                Console.WriteLine("Массив после сортировки");
-                printArray(array);
-                Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken.Milliseconds);
-                Console.WriteLine("Начинаю сортировку методом вставки...");
+                //Console.WriteLine("Массив после сортировки");
+                //printArray(array);
+                //Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken.Milliseconds);
+                //Console.WriteLine("Начинаю сортировку методом вставки...");
                 DateTime start2 = DateTime.Now;
                 array2 = insertionSort(array2);
                 TimeSpan timeTaken2 = DateTime.Now - start2;
-                Console.WriteLine("Массив после сортировки");
+                //Console.WriteLine("Массив после сортировки");
                 printArray(array2);
-                Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
+                //Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
                 Console.Write("Введите индекс начала удаления: ");
                 int startDeleteIndex = int.Parse(Console.ReadLine());
                 Console.Write("Введите количество удаляемых элементов: ");
                 int count = int.Parse(Console.ReadLine());
-                if (startDeleteIndex < array.Length - 1 && startDeleteIndex > 0)
+                if (startDeleteIndex < array.Length - 1 && startDeleteIndex >= 0)
                 {
 
-                    if (count < array.Length && count >= 0 && startDeleteIndex + count < array.Length)
+                    if (count <= array.Length && count >= 0 && startDeleteIndex + count <= array.Length)
                     {
                         array = deleteInArray(array, startDeleteIndex, startDeleteIndex + count);
                         printArray(array);
