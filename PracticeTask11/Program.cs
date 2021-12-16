@@ -21,7 +21,6 @@ namespace PracticeTask11
             //возвращаем массив
             return array;
         }
-
         static int getPivotIndex(int[] array, int minIndex, int maxIndex)
         {
             //изначально объявляем индекс пивота
@@ -50,7 +49,6 @@ namespace PracticeTask11
             e1 = e2;
             e2 = temp;
         }
-
         //метод сортировки вставками
         static int[] insertionSort(int[] array)
         {
@@ -127,67 +125,68 @@ namespace PracticeTask11
             Random random = new Random();
             Console.Write("Введите количество элементов: ");
             int N = int.Parse(Console.ReadLine());
-            if (N < 2 || N > 2147483647)
-            {
-                Console.WriteLine("Ошибка при вводе количества элементов!");
-            }
-            else
+            if (N > 2 && N < 2147483647)
             {
                 int[] array = new int[N];
                 for (int i = 0; i < array.Length; i++)
                 {
                     array[i] = random.Next(-999, 999);
-                    //Console.Write($" {array[i]}");
+                    Console.Write($" {array[i]}");
                 }
                 int[] array2 = new int[N];
                 Array.Copy(array, array2, N);
-                //Console.WriteLine();
+                Console.WriteLine();
                 Console.WriteLine("Начинаю быструю сортировку...");
                 DateTime start = DateTime.Now;
                 array = quickSort(array, 0, array.Length - 1);
                 TimeSpan timeTaken = DateTime.Now - start;
                 Console.WriteLine("Массив после сортировки");
-                //printArray(array);
+                printArray(array);
                 Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken.Milliseconds);
                 Console.WriteLine("Начинаю сортировку методом вставки...");
                 DateTime start2 = DateTime.Now;
                 array2 = insertionSort(array2);
                 TimeSpan timeTaken2 = DateTime.Now - start2;
-                //Console.WriteLine("Массив после сортировки");
+                Console.WriteLine("Массив после сортировки");
                 printArray(array2);
-                //Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
+                Console.WriteLine("Затраченное время на сортировку в милисекундах = " + timeTaken2.Milliseconds);
                 Console.Write("Введите индекс начала удаления: ");
                 int startDeleteIndex = int.Parse(Console.ReadLine());
                 Console.Write("Введите количество удаляемых элементов: ");
                 int count = int.Parse(Console.ReadLine());
-                if (startDeleteIndex > array.Length - 1 || startDeleteIndex < 0)
+                if (startDeleteIndex < array.Length - 1 && startDeleteIndex > 0)
                 {
-                    Console.WriteLine("Ошибка при вводе индекса начала удаления!");
-                }
-                else
-                {
-                    if (count > array.Length || count <= 0 || startDeleteIndex + count > array.Length)
-                    {
-                        Console.WriteLine("Ошибка при вводе количества элементов к удалению!");
-                    }
-                    else
+
+                    if (count < array.Length && count >= 0 && startDeleteIndex + count < array.Length)
                     {
                         array = deleteInArray(array, startDeleteIndex, startDeleteIndex + count);
                         printArray(array);
-                    }
+                        Console.Write("Введите запрашиваемый элемент: ");
+                        int requiredElement = int.Parse(Console.ReadLine());
+                        int resultOfSearch = binarySearch(array, requiredElement, 0, array.Length - 1);
+                        if (resultOfSearch == -1)
+                        {
+                            Console.WriteLine("Элемент не найден");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Элемент {requiredElement} найден под индексом {resultOfSearch}");
+                        }
 
-                }
-                Console.Write("Введите запрашиваемый элемент: ");
-                int requiredElement = int.Parse(Console.ReadLine());
-                int resultOfSearch = binarySearch(array, requiredElement, 0, array.Length - 1);
-                if (resultOfSearch == -1)
-                {
-                    Console.WriteLine("Элемент не найден");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка при вводе количества элементов к удалению!");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"Элемент {requiredElement} найден под индексом {resultOfSearch}");
+                    Console.WriteLine("Ошибка при вводе индекса начала удаления!");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка при вводе количества элементов!");
             }
         }
     }
